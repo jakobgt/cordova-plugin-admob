@@ -9,16 +9,6 @@ http://docs.phonegap.com/en/edge/guide_cli_index.md.html#The%20Command-line%20In
 How to install plugin whith phonegap CLI : 
 > phonegap local plugin add https://github.com/aliokan/cordova-plugin-admob
 
-### For PositionFromTop
-
-Add this code to your CordovaActivity subclass on Android to get PositionFromTop to work:
-
-    // Remove this code, if not using positionFromTop.
-    RelativeLayout rl = new RelativeLayout(this);
-    root.removeView(appView);
-    rl.addView(appView);
-    setContentView(rl);
-
 ##Implementation:
 
 There are two calls needed to get AdMob Ads:
@@ -32,6 +22,7 @@ There are two calls needed to get AdMob Ads:
              {
                'publisherId': 'INSERT_YOUR_PUBLISHER_ID_HERE',
                'adSize': admob.AD_SIZE.BANNER
+               'positionFromTop': 80 // Inserts the banner 80px from the top.
              },
              successCallback,
              failureCallback
@@ -58,6 +49,17 @@ There are two calls needed to get AdMob Ads:
              successCallback,
              failureCallback
          );
+
+
+### For PositionFromTop
+
+Add this code to your CordovaActivity subclass on Android to get PositionFromTop to work:
+
+    // Remove this code, if not using positionFromTop.
+    RelativeLayout rl = new RelativeLayout(this);
+    root.removeView(appView);
+    rl.addView(appView);
+    setContentView(rl);
 
 
 This plugin also allows you the option to listen for ad events.  The following

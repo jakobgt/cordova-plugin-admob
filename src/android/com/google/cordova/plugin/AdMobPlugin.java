@@ -10,10 +10,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -145,10 +148,18 @@ public class AdMobPlugin extends CordovaPlugin {
 					adView.setAdListener(new BannerListener());
 					ViewGroup parentView = (ViewGroup) webView.getParent();
 					if (positionFromTop > -1) {
+						// The position from top is based on browser pixels, but the positioning 
+						// below is based on screen pixels. So we convert the positionFromTop 
+						// over to screen pixels, were we assume that the width of the screen is 
+						// 320px as describe in MobileOptimized in our app. 
+						WindowManager wm = 
+								(WindowManager) cordova.getActivity().getSystemService(Context.WINDOW_SERVICE);
+						Display display = wm.getDefaultDisplay();
+						int screenPositionFromTop = positionFromTop * display.getWidth()/320;
 						RelativeLayout.LayoutParams head_params = 
 								new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
 										RelativeLayout.LayoutParams.WRAP_CONTENT);
-						head_params.setMargins(0, positionFromTop, 0, 0); //substitute parameters for left, top, right, bottom
+						head_params.setMargins(0, screenPositionFromTop, 0, 0); //substitute parameters for left, top, right, bottom
 						adView.setLayoutParams(head_params);
 
 				        parentView.addView(adView, head_params);						

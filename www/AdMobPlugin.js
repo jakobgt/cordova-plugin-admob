@@ -1,4 +1,4 @@
-cordova.define("com.google.cordova.plugin.AdMobPlugin.AdMob", function(require, exports, module) {/**
+/**
  * This class defines an AdMob object that is used to show ads natively in a
  * native iOS application.
  * @constructor
@@ -33,7 +33,8 @@ var admob =  {
      *        {
      *          'publisherId': 'MY_PUBLISHER_ID',
      *          'adSize': AdMob.AD_SIZE.AD_SIZE_CONSTANT,
-     *          'positionAtTop': false
+     *          'positionAtTop': false,
+     *          'positionFromTop': 20,
      *        }
      *
      *        publisherId is the publisher ID from your AdMob site, adSize
@@ -41,6 +42,8 @@ var admob =  {
      *        determine whether to create the banner above or below the app content.
      *        A publisher ID and AdSize are required.  The default for postionAtTop
      *        is false, meaning the banner would be shown below the app content.
+     *        positionFromTop signifies the y coordinate of the banners top left corner. 
+     *        positionFromTop takes precedence over positionAtTop.
      * @param {function()} successCallback The function to call if the banner was
      *         created successfully.
      * @param {function()} failureCallback The function to call if create banner
@@ -223,7 +226,7 @@ var admob =  {
             'AdMobPlugin',
             'hideAd',[{}]);
     }
+    
 };
 
 module.exports = admob;
-});

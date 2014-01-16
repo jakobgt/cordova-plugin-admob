@@ -1,4 +1,4 @@
-/**
+cordova.define("com.google.cordova.plugin.AdMobPlugin.AdMob", function(require, exports, module) {/**
  * This class defines an AdMob object that is used to show ads natively in a
  * native iOS application.
  * @constructor
@@ -33,8 +33,7 @@ var admob =  {
      *        {
      *          'publisherId': 'MY_PUBLISHER_ID',
      *          'adSize': AdMob.AD_SIZE.AD_SIZE_CONSTANT,
-     *          'positionAtTop': false,
-     *          'positionFromTop': 20,
+     *          'positionAtTop': false
      *        }
      *
      *        publisherId is the publisher ID from your AdMob site, adSize
@@ -42,8 +41,6 @@ var admob =  {
      *        determine whether to create the banner above or below the app content.
      *        A publisher ID and AdSize are required.  The default for postionAtTop
      *        is false, meaning the banner would be shown below the app content.
-     *        positionFromTop signifies the y coordinate of the banners top left corner. 
-     *        positionFromTop takes precedence over positionAtTop.
      * @param {function()} successCallback The function to call if the banner was
      *         created successfully.
      * @param {function()} failureCallback The function to call if create banner
@@ -195,8 +192,38 @@ var admob =  {
             failureCallback,
             'AdMobPlugin',
                      'killAd',[{}]);
+    },
+
+    /**
+     * Shows the banner if has been created.
+     * @param {function()} successCallback The function to call if the ad was
+     *        shown successfully.
+     * @param {function()} failureCallback The function to call if the ad failed
+     *        to be shown.
+     */
+    showAd : function(successCallback, failureCallback) {
+        cordova.exec(
+            successCallback,
+            failureCallback,
+            'AdMobPlugin',
+            'showAd',[{}]);
+    },
+
+    /**
+     * Hides the banner.
+     * @param {function()} successCallback The function to call if the ad was
+     *        hidden successfully.
+     * @param {function()} failureCallback The function to call if the ad failed
+     *        to be hidden.
+     */
+    hideAd : function(successCallback, failureCallback) {
+        cordova.exec(
+            successCallback,
+            failureCallback,
+            'AdMobPlugin',
+            'hideAd',[{}]);
     }
-    
 };
 
 module.exports = admob;
+});

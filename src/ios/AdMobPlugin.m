@@ -174,6 +174,38 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
 }
 
+- (void)showAd:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult *pluginResult;
+    NSString *callbackId = command.callbackId;
+    if(self.bannerView) {
+        [self.bannerView setHidden:NO];
+    } else if(self.interstitial){
+        //[self.interstitial setDelegate:nil];
+        //[self.interstitial removeFromSuperview];
+        //self.interstitial = nil;
+    } else {
+        // Try to prevent requestAd from being called without createBannerView first
+        // being called.
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
+                                         messageAsString:@"AdMobPlugin:"
+                        @"No ad view exists"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+        return;
+    }
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
+- (void)hideAd:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult *pluginResult;
+    NSString *callbackId = command.callbackId;
+    if(self.bannerView) {
+        [self.bannerView setHidden:YES];
+    }
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:callbackId];
+}
+
 - (GADAdSize)GADAdSizeFromString:(NSString *)string {
     // Create a new alert object and set initial values.
     if ([string isEqualToString:@"BANNER"]) {

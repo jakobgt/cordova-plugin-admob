@@ -61,6 +61,7 @@ Add this code to your CordovaActivity subclass on Android to get PositionFromTop
     rl.addView(appView);
     setContentView(rl);
 
+### Remaining methods
 
 This plugin also allows you the option to listen for ad events.  The following
 events are supported:
@@ -83,7 +84,16 @@ If you want to create an Interstitials sur `createInterstitialView`
 If you want Kill banner :  
 
          admob.killAd(successCallback,failureCallback);
-         
+      
+This fork also includes methods for hiding and showing the ad. A hidden ad still occupies the space.
+Note that both methods require createBannerView has been called.
+
+     For showing the ad
+         admob.showAd(successCallback,failureCallback);
+
+     For hiding the ad
+         admob.hideAd(successCallback,failureCallback);   
+
 Based on:  
 https://github.com/rajpara11/phonegap-plugins/tree/master/Android/AdMobPlugin  
 https://github.com/rajpara11/phonegap-plugins/tree/master/iOS/AdMobPlugin  

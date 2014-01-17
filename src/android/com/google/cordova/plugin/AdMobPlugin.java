@@ -14,6 +14,7 @@ import android.content.Context;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
@@ -53,6 +54,8 @@ public class AdMobPlugin extends CordovaPlugin {
 	public static final String ACTION_CREATE_INTERSTITIAL_VIEW = "createInterstitialView";
 	public static final String ACTION_REQUEST_AD = "requestAd";
 	public static final String KILL_AD = "killAd";
+	public static final String SHOW_AD = "showAd";
+	public static final String HIDE_AD = "hideAd";
 
 	/**
 	 * This is the main method for the AdMob plugin. All API calls go through
@@ -83,6 +86,12 @@ public class AdMobPlugin extends CordovaPlugin {
 			return true;
 		} else if (KILL_AD.equals(action)) {
 			executeKillAd(callbackContext);
+			return true;
+		} else if (SHOW_AD.equals(action)) {
+			executeShowAd(callbackContext);
+			return true;
+		} else if (HIDE_AD.equals(action)) {
+			executeHideAd(callbackContext);
 			return true;
 		} else {
 			Log.d(LOGTAG, String.format("Invalid action passed: %s", action));
@@ -155,7 +164,8 @@ public class AdMobPlugin extends CordovaPlugin {
 						WindowManager wm = 
 								(WindowManager) cordova.getActivity().getSystemService(Context.WINDOW_SERVICE);
 						Display display = wm.getDefaultDisplay();
-						int screenPositionFromTop = positionFromTop * display.getWidth()/320;
+						// Correction term, that is used to pull down the ad under the bar.:
+						int screenPositionFromTop = positionFromTop + 30;
 						RelativeLayout.LayoutParams head_params = 
 								new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
 										RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -392,6 +402,38 @@ public class AdMobPlugin extends CordovaPlugin {
 
         	this.cordova.getActivity().runOnUiThread(runnable);
 	}
+	
+	private void executeShowAd(final CallbackContext callbackContext) {
+	        final Runnable runnable = new Runnable() {
+            		public void run() {
+                		if (adView == null) {
+                    		// Notify the plugin.
+                    			callbackContext.error("AdView is null.  Did you call createBannerView or already destroy it?");
+                		} else {
+                			adView.setVisibility(View.VISIBLE);
+		                    callbackContext.success();
+		                }
+	            	}
+	        };
+
+        	this.cordova.getActivity().runOnUiThread(runnable);
+	}
+	
+	private void executeHideAd(final CallbackContext callbackContext) {
+	        final Runnable runnable = new Runnable() {
+            		public void run() {
+                		if (adView == null) {
+                    		// Notify the plugin.
+                    			callbackContext.error("AdView is null.  Did you call createBannerView or already destroy it?");
+                		} else {
+                			adView.setVisibility(View.INVISIBLE);
+		                    callbackContext.success();
+		                }
+	            	}
+	        };
+
+        	this.cordova.getActivity().runOnUiThread(runnable);
+	}	
 
 	/**
 	 * This class implements the AdMob ad listener events. It forwards the
